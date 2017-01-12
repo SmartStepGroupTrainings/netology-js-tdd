@@ -1,33 +1,38 @@
-var Calculator = function() {
-    var self = this;
-    var defaultValue = 0;
+"use strict";
 
-    self.add = function(input) {
-        if (!input) {
-            return defaultValue;
+class Calculator {
+    constructor() {
+        this.defaultValue = 0;
+    }
+
+    add(input) {
+        if (this.isEmpty(input)) {
+            return this.defaultValue;
         }
 
-        if (isSingleNumber(input)) {
-            return parseSingleNumber(input);
+        if (this.isSingleNumber(input)) {
+            return this.parseSingleNumber(input);
         }
 
-        return parseMultipleNumbers(input);
+        return this.parseMultipleNumbers(input);
     };
 
-    function parseMultipleNumbers(input) {
-        var numbers = input.split(/[\n,]/);
-
-        return numbers.reduce(function(a, b) {
-            return parseSingleNumber(a) + parseSingleNumber(b);
-        });
+    parseMultipleNumbers(input) {
+        let summands = input.split(/[\n,]/);
+        return summands.reduce((a, b) =>
+            this.parseSingleNumber(a) + this.parseSingleNumber(b));
     }
 
-    function parseSingleNumber(numberAsString) {
-        return parseInt(numberAsString, 10);
+    isSingleNumber(input) {
+        return input.indexOf(',') === -1 && input.indexOf('\n') === -1;
     }
 
-    function isSingleNumber(numbers) {
-        return numbers.indexOf(',') === -1 && numbers.indexOf('\n') === -1;
+    isEmpty(numbers) {
+        return !numbers;
+    }
+
+    parseSingleNumber(number) {
+        return parseInt(number, 10);
     }
 }
 
